@@ -44,8 +44,8 @@ public:
     void SetCurrentRule(MemoryRule* pRule);
     MemoryRule* GetCurrentRule();
     u8* GetMemoryMap();
-    u8 Read(u16 address);
-    void Write(u16 address, u8 value);
+    u8 Read(u16 address, u16 pc);
+    void Write(u16 address, u8 value, u16 pc);
     u8 Retrieve(u16 address);
     void Load(u16 address, u8 value);
     stDisassembleRecord** GetDisassembledMemoryMap();

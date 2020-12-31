@@ -27,8 +27,8 @@ class SegaMemoryRule : public MemoryRule
 public:
     SegaMemoryRule(Memory* pMemory, Cartridge* pCartridge);
     virtual ~SegaMemoryRule();
-    virtual u8 PerformRead(u16 address);
-    virtual void PerformWrite(u16 address, u8 value);
+    virtual u8 PerformRead(u16 address, u16 pc);
+    virtual void PerformWrite(u16 address, u8 value, u16 pc);
     virtual void Reset();
     virtual void SaveRam(std::ostream &file);
     virtual bool LoadRam(std::istream &file, s32 fileSize);

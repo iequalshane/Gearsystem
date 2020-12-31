@@ -394,7 +394,7 @@ void Processor::OPCode0x36()
         u8 d = m_pMemory->Read(PC.GetValue());
         u8 n = m_pMemory->Read(PC.GetValue() + 1);
         u16 address = IX.GetValue() + static_cast<s8> (d);
-        m_pMemory->Write(address, n);
+        m_pMemory->Write(address, n, PC.GetValue());
         PC.Increment();
     }
     else if (m_CurrentPrefix == 0xFD)

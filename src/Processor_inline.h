@@ -126,9 +126,9 @@ inline void Processor::StackPush(SixteenBitRegister* reg)
 
 inline void Processor::StackPop(SixteenBitRegister* reg)
 {
-    reg->SetLow(m_pMemory->Read(SP.GetValue()));
+    reg->SetLow(m_pMemory->Read(SP.GetValue(), SP.GetValue()));
     SP.Increment();
-    reg->SetHigh(m_pMemory->Read(SP.GetValue()));
+    reg->SetHigh(m_pMemory->Read(SP.GetValue(), SP.GetValue()));
     SP.Increment();
 }
 
@@ -219,7 +219,7 @@ inline void Processor::OPCodes_LD(EightBitRegister* reg, u16 address)
 
 inline void Processor::OPCodes_LD(u16 address, u8 reg)
 {
-    m_pMemory->Write(address, reg);
+    m_pMemory->Write(address, reg, PC.GetValue());
 }
 
 inline void Processor::OPCodes_LD_dd_nn(SixteenBitRegister* reg)

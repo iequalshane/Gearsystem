@@ -766,12 +766,12 @@ void GearsystemCore::SetRamModificationCallback(RamChangedCallback callback)
 
 void GearsystemCore::InitMemoryRules()
 {
-    m_pSG1000MemoryRule = new SG1000MemoryRule(m_pMemory, m_pCartridge);
-    m_pCodemastersMemoryRule = new CodemastersMemoryRule(m_pMemory, m_pCartridge);
+    //m_pSG1000MemoryRule = new SG1000MemoryRule(m_pMemory, m_pCartridge);
+    //m_pCodemastersMemoryRule = new CodemastersMemoryRule(m_pMemory, m_pCartridge);
     m_pSegaMemoryRule = new SegaMemoryRule(m_pMemory, m_pCartridge);
-    m_pRomOnlyMemoryRule = new RomOnlyMemoryRule(m_pMemory, m_pCartridge);
-    m_pKoreanMemoryRule = new KoreanMemoryRule(m_pMemory, m_pCartridge);
-    m_pMSXMemoryRule = new MSXMemoryRule(m_pMemory, m_pCartridge);
+    //m_pRomOnlyMemoryRule = new RomOnlyMemoryRule(m_pMemory, m_pCartridge);
+    //m_pKoreanMemoryRule = new KoreanMemoryRule(m_pMemory, m_pCartridge);
+    //m_pMSXMemoryRule = new MSXMemoryRule(m_pMemory, m_pCartridge);
 
     m_pMemory->SetCurrentRule(m_pRomOnlyMemoryRule);
     m_pProcessor->SetIOPOrts(m_pSmsIOPorts);
@@ -832,9 +832,9 @@ void GearsystemCore::Reset()
     m_pVideo->Reset(m_pCartridge->IsGameGear(), m_pCartridge->IsPAL());
     m_pInput->Reset(m_pCartridge->IsGameGear());
     m_pSegaMemoryRule->Reset();
-    m_pCodemastersMemoryRule->Reset();
-    m_pSG1000MemoryRule->Reset();
-    m_pRomOnlyMemoryRule->Reset();
+    //m_pCodemastersMemoryRule->Reset();
+    //m_pSG1000MemoryRule->Reset();
+    //m_pRomOnlyMemoryRule->Reset();
     m_pGameGearIOPorts->Reset();
     m_pSmsIOPorts->Reset();
     m_bPaused = false;

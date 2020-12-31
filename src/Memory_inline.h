@@ -20,14 +20,14 @@
 #ifndef MEMORY_INLINE_H
 #define	MEMORY_INLINE_H
 
-inline u8 Memory::Read(u16 address)
+inline u8 Memory::Read(u16 address, u16 pc = 0)
 {
-    return m_pCurrentMemoryRule->PerformRead(address);
+    return m_pCurrentMemoryRule->PerformRead(address, pc);
 }
 
-inline void Memory::Write(u16 address, u8 value)
+inline void Memory::Write(u16 address, u8 value, u16 pc = 0)
 {
-    m_pCurrentMemoryRule->PerformWrite(address, value);
+    m_pCurrentMemoryRule->PerformWrite(address, value, pc);
 }
 
 inline u8 Memory::Retrieve(u16 address)

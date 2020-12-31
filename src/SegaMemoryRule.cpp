@@ -21,18 +21,22 @@
 #include "Memory.h"
 #include "Cartridge.h"
 
+FILE* mirrorlog;
+
 SegaMemoryRule::SegaMemoryRule(Memory* pMemory, Cartridge* pCartridge) : MemoryRule(pMemory, pCartridge)
 {
     m_pRAMBanks = new u8[0x8000];
     Reset();
+    mirrorlog = fopen("mirrorlog.txt", "w+");
 }
 
 SegaMemoryRule::~SegaMemoryRule()
 {
     SafeDeleteArray(m_pRAMBanks);
+    fclose(mirrorlog);
 }
 
-u8 SegaMemoryRule::PerformRead(u16 address)
+u8 SegaMemoryRule::PerformRead(u16 address, u16 pc)
 {
     if (address < 0x400)
     {
@@ -65,14 +69,25 @@ u8 SegaMemoryRule::PerformRead(u16 address)
             return pROM[(address - 0x8000) + m_iMapperSlotAddress[2]];
         }
     }
+    else if (address < 0xE000)
+    {
+        // RAM
+        return m_pMemory->Retrieve(address);
+    }
+    else if (address < 0xFFFC)
+    {
+        // RAM mirror
+        fprintf(mirrorlog, "%x: READ %x\n", pc, address);
+        return m_pMemory->Retrieve(address);
+    }
     else
     {
-        // RAM + RAM mirror
+        // Mapper control
         return m_pMemory->Retrieve(address);
     }
 }
 
-void SegaMemoryRule::PerformWrite(u16 address, u8 value)
+void SegaMemoryRule::PerformWrite(u16 address, u8 value, u16 pc)
 {
     if (address < 0x8000)
     {
@@ -130,6 +145,11 @@ void SegaMemoryRule::PerformWrite(u16 address, u8 value)
             {
                 m_iMapperSlot[2] = value & (m_pCartridge->GetROMBankCount() - 1);
                 m_iMapperSlotAddress[2] = m_iMapperSlot[2] * 0x4000;
+                break;
+            }
+            default:
+            {
+                fprintf(mirrorlog, "%x: WRITE %x\n", pc, address);
                 break;
             }
         }
