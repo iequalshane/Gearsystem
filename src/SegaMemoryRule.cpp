@@ -149,7 +149,7 @@ void SegaMemoryRule::PerformWrite(u16 address, u8 value, u16 pc)
             }
             default:
             {
-                fprintf(mirrorlog, "%x: WRITE %x\n", pc, address);
+                fprintf(mirrorlog, "%x: WRITE %x - %x\n", pc, address, value);
                 break;
             }
         }
