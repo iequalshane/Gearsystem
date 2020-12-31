@@ -77,7 +77,8 @@ u8 SegaMemoryRule::PerformRead(u16 address, u16 pc)
     else if (address < 0xFFFC)
     {
         // RAM mirror
-        fprintf(mirrorlog, "%x: READ %x\n", pc, address);
+        if (address != pc) // Comment out if you want to log PC in RAM mirror
+            fprintf(mirrorlog, "%x: READ %x\n", pc, address);
         return m_pMemory->Retrieve(address);
     }
     else
@@ -157,6 +158,11 @@ void SegaMemoryRule::PerformWrite(u16 address, u8 value, u16 pc)
 
     if (m_iPersistRAM < 0)
         m_iPersistRAM = 0;
+}
+
+void SegaMemoryRule::LogInstruct(const char* instr, u16 pc, u16 address)
+{
+    fprintf(mirrorlog, "%x: %s %x\n", pc, instr, address);
 }
 
 void SegaMemoryRule::Reset()

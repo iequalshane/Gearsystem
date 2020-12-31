@@ -40,6 +40,7 @@ public:
     virtual int GetBank(int index);
     virtual void SaveState(std::ostream& stream);
     virtual void LoadState(std::istream& stream);
+    void LogInstruct(const char* instr, u16 pc, u16 address);
 
 private:
     int m_iMapperSlot[3];

@@ -24,6 +24,7 @@
 #include "SixteenBitRegister.h"
 #include "Processor.h"
 #include "IOPorts.h"
+#include "SegaMemoryRule.h"
 
 inline u8 Processor::FetchOPCode()
 {
@@ -320,6 +321,12 @@ inline void Processor::OPCodes_JP_nn()
     u8 l = m_pMemory->Read(PC.GetValue());
     u8 h = m_pMemory->Read(PC.GetValue() + 1);
     u16 address = (h << 8) | l;
+
+    if (address >= 0xC000 && address < 0xFFFC)
+    {
+        ((SegaMemoryRule*)m_pMemory)->LogInstruct("JP_nn", PC.GetValue(), address);
+    }
+
     PC.SetValue(address);
     WZ.SetValue(address);
 }
@@ -331,6 +338,11 @@ inline void Processor::OPCodes_JP_nn_Conditional(bool condition)
     u16 address = (h << 8) | l;
     if (condition)
     {
+        if (address >= 0xC000 && address < 0xFFFC)
+        {
+            ((SegaMemoryRule*)m_pMemory)->LogInstruct("JP_nn", PC.GetValue(), address);
+        }
+
         PC.SetValue(address);
         m_bBranchTaken = true;
     }
@@ -345,7 +357,14 @@ inline void Processor::OPCodes_JP_nn_Conditional(bool condition)
 inline void Processor::OPCodes_JR_n()
 {
     u16 pc = PC.GetValue();
-    PC.SetValue(pc + 1 + (static_cast<s8> (m_pMemory->Read(pc))));
+
+    u16 address = m_pMemory->Read(pc);
+    if (address >= 0xC000 && address < 0xFFFC)
+    {
+        ((SegaMemoryRule*)m_pMemory)->LogInstruct("JR_n", PC.GetValue(), address);
+    }
+
+    PC.SetValue(pc + 1 + (static_cast<s8> (address)));
 }
 
 inline void Processor::OPCodes_JR_n_conditional(bool condition)
